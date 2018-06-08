@@ -16,7 +16,7 @@ with open('requirements.txt') as f:
     reqs = f.read()
 
 setup(
-    name='nlptools',
+    name='nlpkit',
     version='0.1',
     description='General scripts for NLP analysis',
     long_description=readme,
