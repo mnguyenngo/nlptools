@@ -1,2 +1,2 @@
-from nlpkit import sentence_matrix
-from nlpkit import find_sim_objs
+from nlpkit import sentence_df
+from nlpkit import find_conjs
