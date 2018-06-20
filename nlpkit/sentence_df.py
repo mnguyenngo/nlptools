@@ -10,16 +10,18 @@ import pandas as pd
 model = spacy.load('en')
 
 
-def sentence_matrix(sentence):
-    """Class object to represent sentences as a matrix to display nlp info
+def sentence_df(sentence):
+    """Represent sentence as a dataframe to display nlp info
 
     Arguments:
         sentence (str)
+    Returns:
+        df (dataframe)
     """
     doc = model(sentence)
     index, data = get_nlp_data(doc)
-    mat = pd.DataFrame(data=data, index=index)
-    return mat
+    df = pd.DataFrame(data=data, index=index)
+    return df
 
 
 def get_nlp_data(doc):

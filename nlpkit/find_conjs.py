@@ -4,19 +4,27 @@
 # LICENSE file in the root directory of this source tree.
 
 
-import spacy
-import pandas as pd
+def find_conjs(doc, context=None):
+    """Returns a dictionary with a list of the conjunctions found in a sentence
 
-model = spacy.load('en')
+    Arguments:
+        doc (spaCy doc object)
+        context (str): name of source document for future reference
+            example: "Washington 2015 Building Code"
 
-
-def find_sim_objs(doc, context=None):
+    Returns:
+        conj_dict_list (dict)
+            objects (list): list of objects found in doc that are part of a
+                            conj
+            context (str)
+    """
     conjs = [token for token in doc if token.dep_ is 'conj']
     conj_chunk = []
     conj_chunk_flat = set()
     for conj in conjs:
         ancestors = list(conj.ancestors)
-        objs = [token for token in ancestors if token.dep_ in ['pobj', 'nsubj']]
+        objs = [token for token in ancestors
+                if token.dep_ in ['pobj', 'nsubj']]
         if len(objs) > 0:
             for obj in objs:
                 if obj in conj_chunk_flat:
