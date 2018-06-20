@@ -4,8 +4,8 @@
 # LICENSE file in the root directory of this source tree.
 
 
-def find_conjs(doc, context=None):
-    """Returns a dictionary with a list of the conjunctions found in a sentence
+def find_conjs(doc):
+    """Returns a list of lists of the conjunctions found in a sentence
 
     Arguments:
         doc (spaCy doc object)
@@ -13,10 +13,11 @@ def find_conjs(doc, context=None):
             example: "Washington 2015 Building Code"
 
     Returns:
-        conj_dict_list (dict)
-            objects (list): list of objects found in doc that are part of a
-                            conj
-            context (str)
+        conj_chunk (list)
+
+    TODO:
+        - [x] context should be included as a class arg to simplify this func
+
     """
     conjs = [token for token in doc if token.dep_ is 'conj']
     conj_chunk = []
@@ -24,7 +25,8 @@ def find_conjs(doc, context=None):
     for conj in conjs:
         ancestors = list(conj.ancestors)
         objs = [token for token in ancestors
-                if token.dep_ in ['pobj', 'nsubj']]
+                if token.dep_ in ['nsubj', 'nsubjpass', 'csubj', 'csubjpass'
+                                  'obj', 'dobj', 'iobj', 'pobj']]
         if len(objs) > 0:
             for obj in objs:
                 if obj in conj_chunk_flat:
@@ -35,11 +37,12 @@ def find_conjs(doc, context=None):
                     conj_chunk.append([obj.lemma_, conj.lemma_])
                 conj_chunk_flat.add(obj)
                 conj_chunk_flat.add(conj)
-    conj_dict_list = []
-    for conj in conj_chunk:
-        conj_dict = dict()
-        conj_dict['objects'] = conj
-        if context is not None:
-            conj_dict['context'] = context
-        conj_dict_list.append(conj_dict)
-    return conj_dict_list
+    # SEE notes in TODO
+    # conj_dict_list = []
+    # for conj in conj_chunk:
+    #     conj_dict = dict()
+    #     conj_dict['objects'] = conj
+        # if context is not None:
+        #     conj_dict['context'] = context
+        # conj_dict_list.append(conj_dict)
+    return conj_chunk
