@@ -3,3 +3,4 @@ scikit-learn
 regex
 scipy
 nltk
+pandas
